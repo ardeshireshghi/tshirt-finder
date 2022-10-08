@@ -1,0 +1,39 @@
+version: '3'
+services:
+  scraper:
+    build: scraper/.
+    environment:
+      - DOCKER_PUPPETEER=true
+      - ES_HOST=http://elasticsearch:9200
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - elastic
+  elasticsearch:
+    image: elasticsearch:8.2.2
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    volumes:
+      - es_data2:/usr/share/elasticsearch/data
+    ports:
+      - target: 9200
+        published: 9200
+    healthcheck:
+      test: curl -fSsl http://localhost:9200/_cat/health?h=status | grep green
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 5s
+    networks:
+      - elastic
+volumes:
+  es_data2:
+    driver: local
+
+networks:
+  elastic:
+    name: elastic
+    driver: bridge
