@@ -1,0 +1,19 @@
+{
+  "name": "tshirt-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "develop": "nodemon --watch ./src server.js"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "serverless-http": "^2.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
